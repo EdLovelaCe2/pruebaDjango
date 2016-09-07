@@ -6,13 +6,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
 from .form import PostForm
 
-
 def post_create(request):
     form = PostForm(request.POST or None)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        # message success
         messages.success(request, "Successfully Created")
         return HttpResponseRedirect(instance.get_absolute_url())
     else:
@@ -30,7 +28,7 @@ def post_detail(request, id=None):
         'title': instance.title,
     }
     return render(request, 'post_detail.html', context)
-    # return HttpResponse("<h1>Detail</h1>")
+
 
 def post_list(request):
     queryset = Post.objects.all()
@@ -38,9 +36,8 @@ def post_list(request):
         'object_list': queryset,
         'title': 'List'
     }
-
     return render(request, 'post_list.html', context)
-    #return HttpResponse("<h1>List</h1>")
+
 
 def post_update(request, id=None):
     instance = get_object_or_404(Post, id=id)
